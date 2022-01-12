@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Card, Form, Button } from "semantic-ui-react";
@@ -12,7 +11,6 @@ export default function LoginPage() {
     imei: "",
   });
   const dispatch = useDispatch();
-  const { isSuccess } = useSelector((state) => state.Auth);
 
   const submit = (e) => {
     e.preventDefault();

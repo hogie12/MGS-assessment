@@ -33,7 +33,9 @@ function* createTicket(action) {
       type: types.CREATE_TICKET_SUCCESS,
       payload: res.data,
     });
+    console.error("Add ticket Success")
   } catch (error) {
+    console.error("Add ticket Fail")
     yield put({
       type: types.CREATE_TICKET_FAIL,
       payload: error.response,

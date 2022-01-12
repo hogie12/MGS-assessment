@@ -19,7 +19,7 @@ export const getType = () => {
     };
 };
 
-export const createTicket = (action) =>{
+export const addTicket = (action) =>{
   return {
     type: types.CREATE_TICKET_PENDING,
     action

@@ -15,42 +15,56 @@ import {
 } from "semantic-ui-react";
 import SidebarMenu from "../component/sidebar";
 import Tabel from "../component/table";
-import { getTiket, getType } from "../store/action";
+import { addTicket, getTiket } from "../store/action";
 import axios from "axios";
 
 export default function MainPage() {
   const tiket = useSelector((state) => state.allTiket);
   const dispatch = useDispatch();
   const [state, setState] = useState(true);
-  
-
+  const [type, setType] = useState([]);
   const [createTicket, setCreateTicket] = useState({
     type_ticket_id: 1,
     sub_type_ticket_id: "",
     permasalahan: "",
   });
+  const ticketType = async () => {
+    const res = await axios.get("/api/mastersupport/getdata");
+    const data = res.data.data;
+    setType(data);
+  };
+  useEffect(() => {
+    ticketType();
+  }, []);
 
   useEffect(() => {
     dispatch(getTiket());
-    dispatch(getType());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChangeType = (e, { value }) =>
     setCreateTicket({ ...createTicket, type_ticket_id: value });
 
+  const handleChangeSubType = (e, { value }) =>
+    setCreateTicket({ ...createTicket, sub_type_ticket_id: value });
+
   const subType = createTicket.type_ticket_id - 1;
-  const subTypeValue = tiket.type[subType];
-  const optionType = tiket.type?.map((data) => {
+  const subTypeValue = type[0 || subType];
+  const optionType = type?.map((data) => {
     return { key: data.kode, text: data.nama, value: data.id };
   });
-  const optionSubType = subTypeValue?.map((data) => {
+  const optionSubType = subTypeValue?.sub_type_ticket.map((data) => {
     return {
       key: data.id,
       text: data.nama,
       value: data.id,
     };
   });
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+    dispatch(addTicket(createTicket));
+  };
 
   return (
     <div>
@@ -63,7 +77,7 @@ export default function MainPage() {
           <>
             {tiket.isLoading ? (
               <>
-                <Segment>
+                <Segment style={{ minHeight: "50vh" }}>
                   <Dimmer active inverted>
                     <Loader inverted>Loading</Loader>
                   </Dimmer>
@@ -97,7 +111,7 @@ export default function MainPage() {
                 </div>
               </Header>
               <Container>
-                <Form>
+                <Form onSubmit={handleCreate}>
                   <Form.Field inline>
                     <label>No. Laporan :</label>
                     <Input disabled>
@@ -123,6 +137,8 @@ export default function MainPage() {
                   <Form.Field inline required>
                     <label>Sub Jenis Gangguan :</label>
                     <Dropdown
+                      onChange={handleChangeSubType}
+                      value={createTicket.sub_type_ticket_id}
                       button
                       basic
                       floating
@@ -130,16 +146,33 @@ export default function MainPage() {
                       placeholder="sub jenis gangguan"
                     />
                   </Form.Field>
+                  <Form.Field inline>
+                    <label>permasalahan :</label>
+                    <input
+                      placeholder="permasalahan"
+                      value={createTicket.permasalahan}
+                      onChange={(e) =>
+                        setCreateTicket({
+                          ...createTicket,
+                          permasalahan: e.target.value,
+                        })
+                      }
+                    />
+                  </Form.Field>
+                  <Button
+                    color="green"
+                    style={{ margin: "20px 10px" }}
+                    type="submit"
+                  >
+                    Simpan
+                  </Button>
+                  <Button
+                    style={{ margin: "20px 10px" }}
+                    onClick={() => setState(false)}
+                  >
+                    Batal
+                  </Button>
                 </Form>
-                <Button color="green" style={{ margin: "20px 10px" }}>
-                  Simpan
-                </Button>
-                <Button
-                  style={{ margin: "20px 10px" }}
-                  onClick={() => setState(false)}
-                >
-                  Batal
-                </Button>
               </Container>
             </Segment>
           </>
