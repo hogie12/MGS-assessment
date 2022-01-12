@@ -1,17 +1,12 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "../pages/mainpage";
 import LoginPage from "../pages/login";
+import { useSelector } from "react-redux";
 
 const Routers = () => {
-  return (
-    <>
-      <Routes>
-        <Route exact path="/" element={<LoginPage />}/>
-        <Route path="/tiket" element={<MainPage />}/>
-        <Route path="*" element={<h1>Page Not Found</h1>}/>
-      </Routes>
-    </>
-  );
+  const { isSuccess } = useSelector((state) => state.Auth);
+
+  return <>{isSuccess ? <MainPage /> : <LoginPage />}</>;
 };
 
 export default Routers;

@@ -12,3 +12,17 @@ export const getTiket = () => {
       type: types.GET_ALL_TIKET_PENDING
     };
 };
+
+export const getType = () => {
+    return {
+      type: types.GET_ALL_TYPE_PENDING
+    };
+};
+
+export const createTicket = (action) =>{
+  return {
+    type: types.CREATE_TICKET_PENDING,
+    action
+  }
+}
+
