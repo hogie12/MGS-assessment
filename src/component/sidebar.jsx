@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Menu, Segment, Sidebar } from "semantic-ui-react";
+import Navbar from "./header";
 
-export default function SidebarMenu({ Children, visible }) {
+export default function SidebarMenu({ Children, visible, setVisible }) {
   const [menu, setMenu] = useState();
 
   const handleItemClick = (e, { name }) => setMenu(name);
@@ -11,7 +12,8 @@ export default function SidebarMenu({ Children, visible }) {
       <Sidebar.Pushable as={Segment}>
         <Sidebar
           as={Menu}
-          animation="push"
+          onHidden={() => setVisible(false)}
+          animation="overlay"
           vertical
           visible={visible}
           width="wide"
@@ -47,6 +49,7 @@ export default function SidebarMenu({ Children, visible }) {
         </Sidebar>
 
         <Sidebar.Pusher>
+          <Navbar visible SetVisible/>  
           <Segment basic>
             {Children}
           </Segment>
