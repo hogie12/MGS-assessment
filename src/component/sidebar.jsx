@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import { Menu, Segment, Sidebar } from "semantic-ui-react";
 import Navbar from "./header";
 
-export default function SidebarMenu({ Children, visible, setVisible }) {
+export default function SidebarMenu({children}) {
   const [menu, setMenu] = useState();
-
+  const [visible, setVisible] = useState(false)
   const handleItemClick = (e, { name }) => setMenu(name);
-
   return (
     <div>
       <Sidebar.Pushable as={Segment}>
         <Sidebar
           as={Menu}
-          onHidden={() => setVisible(false)}
+          onHide={() => setVisible(false)}
           animation="overlay"
           vertical
           visible={visible}
@@ -24,34 +23,27 @@ export default function SidebarMenu({ Children, visible, setVisible }) {
           <Menu.Item header>
             <h3>Navigasi</h3>
           </Menu.Item>
-          <Menu.Item
-            name="editorials"
-            active={menu === "editorials"}
-            onClick={handleItemClick}
-          >
-            Editorials
-          </Menu.Item>
 
           <Menu.Item
-            name="reviews"
-            active={menu === "reviews"}
+            name="Tiket"
+            active={menu === "Tiket"}
             onClick={handleItemClick}
           >
-            Reviews
+            Tiket
           </Menu.Item>
           <Menu.Item
-            name="upcomingEvents"
-            active={menu === "upcomingEvents"}
+            name="tiketSupport"
+            active={menu === "tiketSupport"}
             onClick={handleItemClick}
           >
-            Upcoming Events
+            Tiket Support
           </Menu.Item>
         </Sidebar>
 
         <Sidebar.Pusher>
-          <Navbar visible SetVisible/>  
-          <Segment basic>
-            {Children}
+          <Navbar visible={visible} SetVisible={() => setVisible(!visible)}/>  
+          <Segment basic style={{minHeight:"90vh"}}>
+            {children}
           </Segment>
         </Sidebar.Pusher>
       </Sidebar.Pushable>

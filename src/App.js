@@ -1,12 +1,13 @@
 import "semantic-ui-css/semantic.min.css";
-import SidebarMenu from "./component/sidebar";
+import Routers from "./routes/routers";
 
 
 function App() {
   return (
     <div className="App">
-      <SidebarMenu/>
+      <Routers/>
     </div>
+    
   );
 }
 
